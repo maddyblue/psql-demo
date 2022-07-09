@@ -1,0 +1,35 @@
+# fly.toml file generated for psql-demo on 2022-07-09T12:01:16-06:00
+
+app = "psql-demo"
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+
+[env]
+  PSQLDEMO_MESSAGE = "Hello Materialize!"
+
+[experimental]
+  allowed_public_ports = []
+  auto_rollback = true
+
+[[services]]
+  http_checks = []
+  internal_port = 5432
+  processes = ["app"]
+  protocol = "tcp"
+  script_checks = []
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  [[services.ports]]
+    port = 5432
+  [[services.ports]]
+    port = 6875
+
+  [[services.tcp_checks]]
+    grace_period = "1s"
+    interval = "15s"
+    restart_limit = 0
+    timeout = "2s"
